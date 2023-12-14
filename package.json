@@ -1,5 +1,15 @@
 {
   "dependencies": {
     "node": "^21.2.0"
-  }
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "nodejsraymond",
+  "version": "1.0.0",
+  "main": "server.js",
+  "devDependencies": {},
+  "author": "Raymond",
+  "license": "ISC",
+  "description": ""
 }
