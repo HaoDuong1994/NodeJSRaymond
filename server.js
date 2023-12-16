@@ -12,13 +12,17 @@ const port = process.env.PORT;
 app.set("views", "./src/views");
 // các view engine set ở thư mục nào
 app.set("view engine", "ejs"); // định nghĩa loại engine
+
+//Config static file
+app.use(express.static(path.join(__dirname, "./src/public"))); // express sẽ lấy tất cả các file tĩnh trong thư mục public
 //Route
 app.get("/", (req, res) => {
-  res.render("exp.ejs"); // truyền vào tham số tên file ejs
+  res.render("exp.ejs");
 });
 
-console.log("duong dan hien tai", __dirname);
-console.log("bien moi truong", process.env);
+app.get("/product", (req, res) => {
+  res.render("product.ejs");
+});
 //App listen
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`);
