@@ -1,28 +1,19 @@
 const express = require("express");
 const app = express();
-
-//Config path
-
-const path = require("path");
 //Config Env
-
 require("dotenv").config();
+const setViewEngine = require("./src/config/viewEngine");
+const setStaticFile = require("./src/config/setStaticFile");
+const router = require("./src/routes/web");
 const port = process.env.PORT;
+const productRouter = require("./src/routes/product");
 //Config Engine
-app.set("views", "./src/views");
-// các view engine set ở thư mục nào
-app.set("view engine", "ejs"); // định nghĩa loại engine
-
+setViewEngine(app);
 //Config static file
-app.use(express.static(path.join(__dirname, "./src/public"))); // express sẽ lấy tất cả các file tĩnh trong thư mục public
+setStaticFile(app, __dirname);
 //Route
-app.get("/", (req, res) => {
-  res.render("exp.ejs");
-});
-
-app.get("/product", (req, res) => {
-  res.render("product.ejs");
-});
+app.use("/", router);
+app.use("/productRouter", productRouter);
 //App listen
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`);
