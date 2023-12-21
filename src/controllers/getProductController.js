@@ -5,7 +5,12 @@ const getProductPage = (req, res) => {
 const getAbcPage = (req, res) => {
   res.send("hello from abc");
 };
+
+const getHomePage = (req, res) => {
+  res.render("homepage.ejs");
+};
 module.exports = {
   getProductPage,
   getAbcPage,
+  getHomePage,
 };

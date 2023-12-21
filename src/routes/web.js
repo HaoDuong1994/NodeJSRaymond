@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.render("exp.ejs");
+  return res.render("homepage.ejs");
 });
 router.get("/product", (req, res) => {
   res.render("product.ejs");
