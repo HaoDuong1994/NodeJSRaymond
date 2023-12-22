@@ -10,6 +10,9 @@ const productRouter = require("./src/routes/product");
 const mysql = require("mysql2");
 const testApiRoute = require("./src/routes/callAPI");
 const { default: test } = require("node:test");
+//Config req.body
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 //Config Engine
 setViewEngine(app);
 //Config static file

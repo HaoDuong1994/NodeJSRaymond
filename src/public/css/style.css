@@ -1,3 +1,8 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 .img {
   width: 300px;
   height: 300px;
@@ -29,4 +34,23 @@
 .topnav a.active {
   background-color: #04aa6d;
   color: white;
+}
+
+fieldset {
+  background-color: #eeeeee;
+}
+
+legend {
+  background-color: gray;
+  color: white;
+  padding: 5px 10px;
+}
+
+input {
+  margin: 5px;
+}
+
+button {
+  margin: 10;
+  cursor: pointer;
 }
