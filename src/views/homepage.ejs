@@ -5,28 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HomePage</title>
     <link rel="stylesheet" href="/css/style.css" />
+    <style>
+      .table-container {
+        padding: 15px 20px;
+        border: solid 2px;
+        margin: 10px;
+      }
+      .title {
+        padding: 8px;
+        font-size: 30px;
+        font-weight: 600;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      tr:hover {
+        background-color: rgb(219, 213, 210);
+      }
+    </style>
   </head>
   <body>
     <div class="topnav">
-      <a class="active" href="#home">Home</a>
-      <a href="#news">News</a>
-      <a href="#contact">Contact</a>
-      <a href="#about">About</a>
+      <a class="active" href="/">List User</a>
+      <a href="/create">Create new users</a>
     </div>
+    <div class="table-container">
+      <div class="title">List user</div>
+      <table>
+        <tr>
+          <th>Id</th>
+          <th>Email</th>
+          <th>Name</th>
+          <th>City</th>
+          <th>Action</th>
+        </tr>
 
-    <form action="/create-user" method="post">
-      <fieldset>
-        <legend style="float: right">Personalia:</legend>
-        <label>Email:</label>
-        <input type="text" name="email" /><br /><br />
-        <label>Name:</label>
-        <input type="text" name="myname" /><br /><br />
-        <label>City:</label>
-        <input type="text" name="city" /><br /><br />
-        <div>
-          <button>Save</button>
-        </div>
-      </fieldset>
-    </form>
+        <!-- <% for (var i = 0; i < listUser.length; i++) { %>
+        <tr>
+          <td><%= listUser[i].id %></td>
+          <td><%= listUser[i].email %></td>
+          <td><%= listUser[i].name %></td>
+          <td><%= listUser[i].city %></td>
+          <td>
+            <button>Edit</button>
+            <button>Delete</button>
+          </td>
+        </tr>
+        <% } %> -->
+        <% listUser.forEach(function(user) { %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.email %></td>
+          <td><%= user.name %></td>
+          <td><%= user.city %></td>
+          <td>
+            <a href="/editUser/<%= user.id %>"><button>Edit</button></a>
+            <form action="/delete-user/<%= user.id %>" method="POST">
+              <button>Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }); %>
+      </table>
+    </div>
   </body>
 </html>

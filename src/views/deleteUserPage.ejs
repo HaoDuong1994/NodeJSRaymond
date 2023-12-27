@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delete user</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div> <%=JSON.stringify(user)%></div>
+    <div class="topnav">
+      <a href="/">List User</a>
+      <a class="active">deleteUser</a>
+    </div>
+
+    <form action="/delete-user" method="POST">
+      <fieldset>
+        <legend style="float: right">delete user:</legend>
+        <label>id</label>
+        <input type="text" name="id" value="<%=user.id%>"/><br /><br />
+        <div>
+        <label>Are you sure to delete with name</label>
+        <input type="text" name="myname" value="<%=user.name%>"/><br /><br />
+        <div>
+          <button>Confirm</button>
+        </div>
+      </fieldset>
+    </form>
+  </body>
+</html>
