@@ -19,8 +19,6 @@ setViewEngine(app);
 setStaticFile(app, __dirname);
 //Route
 app.use("/", router);
-app.use("/productRouter", productRouter);
-app.use("/testApiRoute", testApiRoute);
 //Test connection
 
 //App listen
