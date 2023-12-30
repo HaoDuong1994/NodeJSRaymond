@@ -1,27 +1,39 @@
 require("dotenv").config();
-const mysql = require("mysql2/promise");
-// const connection = mysql.createConnection({
-//   host: process.env.HOST_NAME,
-//   port: process.env.DB_PORT,
-//   password: process.env.DB_PASSWORD,
-//   user: process.env.DB_USERS,
-//   database: process.env.DB_NAME,
-// });
+const mongoose = require("mongoose");
+const dbState = [
+  {
+    value: 0,
+    label: "disconnected",
+  },
+  {
+    value: 1,
+    label: "connected",
+  },
+  {
+    value: 2,
+    label: "connecting",
+  },
+  {
+    value: 3,
+    label: "disconnecting",
+  },
+];
 
-//Sử dụng connection pool để hạn chế overload database
+const connection = async () => {
+  try {
+    const options = {
+      // user: process.env.DB_USER,
+      // pass: process.env.DB_PASSWORD,
+      dbName: process.env.DB_NAME,
+    };
+    await mongoose.connect(process.env.DB_HOST, options);
 
-const connection = mysql.createPool({
-  host: process.env.HOST_NAME,
-  port: process.env.DB_PORT,
-  password: process.env.DB_PASSWORD,
-  user: process.env.DB_USERS,
-  database: process.env.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 10,
-  idleTimeout: 60000,
-  queueLimit: 0,
-  enableKeepAlive: true,
-  keepAliveInitialDelay: 0,
-});
-
+    const state = Number(mongoose.connection.readyState);
+    console.log(dbState.find((f) => f.value == state).label, "to db"); // connected to db
+  } catch (error) {
+    console.log("loi ket noi >>>>>>>", error);
+  }
+};
+// mongodb://root:123456@localhost:27018
+// mongo express chạy tại: http://localhost:9000
 module.exports = connection;

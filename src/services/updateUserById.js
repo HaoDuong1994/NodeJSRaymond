@@ -7,4 +7,5 @@ const updateUserById = async (myname, city, email, id) => {
     [myname, city, email, id]
   );
 };
+console.log(1);
 module.exports = updateUserById;
