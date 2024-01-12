@@ -33,6 +33,8 @@ const updateCustomerService = async (id, objectCustomer) => {
       email: objectCustomer.email,
       image: objectCustomer.image,
       description: objectCustomer.description,
+      age: objectCustomer.age,
+      hobbit: objectCustomer.hobbit,
     }
   );
   return data;
@@ -41,6 +43,17 @@ const deleteCustomerService = async (idCustomer) => {
   const result = await khanhHang.deleteOne({ _id: idCustomer });
   console.log("check result >>>>>", result);
   return result;
+};
+const deleteUserwithSchema = async (id) => {
+  try {
+    if (id) {
+      console.log("id from customer", id);
+    }
+    const data = await khanhHang.deleteOne(id);
+    return data;
+  } catch (error) {
+    console.log("error from delete data", error);
+  }
 };
 module.exports = {
   createCustomerService,
