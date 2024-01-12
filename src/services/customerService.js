@@ -19,4 +19,33 @@ const createManyCustomerService = async (arrayCustomer) => {
     return null;
   }
 };
-module.exports = { createCustomerService, createManyCustomerService };
+const getAllCustomerService = async () => {
+  const data = await khanhHang.find({});
+  return data;
+};
+const updateCustomerService = async (id, objectCustomer) => {
+  const data = await khanhHang.updateOne(
+    { _id: id },
+    {
+      name: objectCustomer.name,
+      address: objectCustomer.address,
+      phone: objectCustomer.phone,
+      email: objectCustomer.email,
+      image: objectCustomer.image,
+      description: objectCustomer.description,
+    }
+  );
+  return data;
+};
+const deleteCustomerService = async (idCustomer) => {
+  const result = await khanhHang.deleteOne({ _id: idCustomer });
+  console.log("check result >>>>>", result);
+  return result;
+};
+module.exports = {
+  createCustomerService,
+  createManyCustomerService,
+  getAllCustomerService,
+  updateCustomerService,
+  deleteCustomerService,
+};
