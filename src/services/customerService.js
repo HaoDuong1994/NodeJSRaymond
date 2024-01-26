@@ -1,4 +1,5 @@
 const khanhHang = require("../modules/khanhhang");
+const aqp = require("api-query-params");
 const createCustomerService = async (dataCustomer) => {
   const data = await khanhHang.create({
     name: dataCustomer.name,
@@ -19,9 +20,19 @@ const createManyCustomerService = async (arrayCustomer) => {
     return null;
   }
 };
-const getAllCustomerService = async () => {
-  const data = await khanhHang.find({});
-  return data;
+const getAllCustomerService = async (page, limit, reqQuery) => {
+  if ((page, limit)) {
+    //offset = (page - 1) * itemsPerPage + 1.
+    const { filter } = aqp(reqQuery);
+    delete filter.page;
+    console.log("filter >>>>>>>>>", filter);
+    let offSet = (page - 1) * limit;
+    const data = await khanhHang.find(filter).limit(limit).skip(offSet).exec();
+    return data;
+  } else {
+    const data = await khanhHang.find({});
+    return data;
+  }
 };
 const updateCustomerService = async (id, objectCustomer) => {
   const data = await khanhHang.updateOne(
@@ -40,20 +51,25 @@ const updateCustomerService = async (id, objectCustomer) => {
   return data;
 };
 const deleteCustomerService = async (idCustomer) => {
-  const result = await khanhHang.deleteOne({ _id: idCustomer });
+  const result = await khanhHang.deleteById({ _id: idCustomer });
   console.log("check result >>>>>", result);
   return result;
 };
-const deleteUserwithSchema = async (id) => {
+const deleteManyCustomerService = async (arrayID) => {
   try {
-    if (id) {
-      console.log("id from customer", id);
-    }
-    const data = await khanhHang.deleteOne(id);
-    return data;
+    const result = await khanhHang.delete({ _id: { $in: arrayID } });
+    return result;
   } catch (error) {
-    console.log("error from delete data", error);
+    console.log(error);
   }
+};
+const restoreCustomerService = async (arrayID) => {
+  const result = await khanhHang.restore({ _id: { $in: arrayID } });
+  return result;
+};
+const deleteUserProjectService = async (data) => {
+  console.log("dataaaaa", data);
+  const idProject = data.id;
 };
 module.exports = {
   createCustomerService,
@@ -61,4 +77,6 @@ module.exports = {
   getAllCustomerService,
   updateCustomerService,
   deleteCustomerService,
+  deleteManyCustomerService,
+  restoreCustomerService,
 };

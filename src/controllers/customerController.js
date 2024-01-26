@@ -5,7 +5,10 @@ const {
   getAllCustomerService,
   updateCustomerService,
   deleteCustomerService,
+  deleteManyCustomerService,
+  restoreCustomerService,
 } = require("../services/customerService");
+const aqp = require("api-query-params");
 const createCustomer = async (req, res) => {
   // {
   //     name: { type: String },
@@ -52,12 +55,23 @@ const createManyCustomer = async (req, res) => {
   }
 };
 const getAllCustomers = async (req, res) => {
-  const data = await getAllCustomerService();
-  console.log("data of all customer", data);
-  res.status(200).json({
-    EC: 0,
-    Customers: data,
-  });
+  console.log("req.query>>>>>>>", req.query);
+
+  let { limit, page } = req.query;
+  if ((limit, page)) {
+    const data = await getAllCustomerService(page, limit, req.query);
+    return res.status(200).json({
+      EC: 0,
+      data,
+    });
+  } else {
+    console.log("limit and page", limit, page);
+    const data = await getAllCustomerService();
+    res.status(200).json({
+      EC: 0,
+      data: data,
+    });
+  }
 };
 const updateCustomer = async (req, res) => {
   try {
@@ -86,10 +100,30 @@ const deleteCustomer = async (req, res) => {
     console.log("error of deleteCustomer >>>>>", error);
   }
 };
+const deleteManyCustomer = async (req, res) => {
+  console.log("res.body customer", req.body.customerID);
+  let arrayID = req.body.customerID;
+  const result = await deleteManyCustomerService(arrayID);
+  res.status(200).json({
+    EC: 0,
+    result: result,
+  });
+};
+const restoreCustomer = async (req, res) => {
+  const arrayID = req.body.idCustomer;
+  const result = await restoreCustomerService(arrayID);
+
+  res.status(200).json({
+    EC: 0,
+    result: result,
+  });
+};
 module.exports = {
   createCustomer,
   createManyCustomer,
   getAllCustomers,
   updateCustomer,
   deleteCustomer,
+  deleteManyCustomer,
+  restoreCustomer,
 };

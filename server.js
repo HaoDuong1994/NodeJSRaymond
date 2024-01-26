@@ -14,6 +14,8 @@ const { default: test } = require("node:test");
 const apiRoutes = require("./src/routes/apiUser");
 const fileUpLoad = require("express-fileupload");
 const customerRoute = require("./src/routes/customerRoute");
+const projectRoute = require("./src/routes/projectRoute");
+const taskRoute = require("./src/routes/taskRoute");
 //Config req.body
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -21,6 +23,9 @@ app.use(express.urlencoded({ extended: true }));
 setViewEngine(app);
 //Config static file
 setStaticFile(app, __dirname);
+//Mongo Driver
+const { MongoClient } = require("mongodb");
+
 //config file upload
 app.use(fileUpLoad());
 //Test connect
@@ -28,6 +33,15 @@ app.use(fileUpLoad());
 (async () => {
   try {
     await connection();
+    //Using Mongo drive to connect
+    // const url = process.env.DB_HOST;
+    // const client = new MongoClient(url);
+    // const dbName = "hoidanit";
+    // await client.connect();
+    // console.log("Connected successfully to server");
+    // const db = client.db(dbName);
+    // const collection = db.collection("khachhangs");
+    // await collection.insertOne({ name: "NguoiMinhHuong" });
     //App listen
     app.listen(port, () => {
       console.log(`Example app listening on port http://localhost:${port}`);
@@ -40,7 +54,8 @@ app.use(fileUpLoad());
 app.use("/", router);
 app.use("/routes/api", apiRoutes);
 app.use("/customer", customerRoute);
-
+app.use("/project", projectRoute);
+app.use("/task", taskRoute);
 //App listen
 // app.listen(port, () => {
 //   console.log(`Example app listening on port http://localhost:${port}`);
