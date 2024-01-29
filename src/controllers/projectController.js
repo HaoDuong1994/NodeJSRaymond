@@ -1,3 +1,4 @@
+const Joi = require("joi");
 const {
   createProjectService,
   getProjectService,
@@ -7,12 +8,37 @@ const {
 } = require("../services/projectService");
 const createProject = async (req, res) => {
   try {
-    const result = await createProjectService(req.body);
-    console.log("result >>>>>>>>>>>>>", result);
-    res.status(200).json({
-      EC: 0,
-      data: result,
+    const { name, leader, task, startDate, endDate } = req.body;
+    const schema = Joi.object({
+      name: Joi.string(),
+      startDate: Joi.string(),
+      endDate: Joi.string(),
+      description: Joi.string(),
+      customerInfor: {
+        name: Joi.string(),
+        phone: Joi.string(),
+        email: Joi.string(),
+      },
+      leader: {
+        name: Joi.string(),
+        email: Joi.string(),
+      },
     });
+    const { value, error } = schema.validate(req.body, { abortEarly: false });
+    console.log("errorrrrrrrrrr", error);
+    console.log("value >>>>>>>>", value);
+    if (error) {
+      return res.status(200).json({
+        mesg: error,
+      });
+    } else {
+      const result = await createProjectService(req.body);
+      console.log("result >>>>>>>>>>>>>", result);
+      res.status(200).json({
+        EC: 0,
+        data: result,
+      });
+    }
   } catch (error) {
     console.log("erroooooooooooooor", error);
     res.status(200).json({

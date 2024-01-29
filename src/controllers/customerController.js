@@ -1,4 +1,6 @@
 const { uploadSingleFile } = require("../services/uploadFile");
+const Joi = require("joi");
+
 const {
   createCustomerService,
   createManyCustomerService,
@@ -21,25 +23,47 @@ const createCustomer = async (req, res) => {
   //   { timestamps: true }
   let { name, address, phone, email, description } = req.body;
   let imgURL = "";
-  if (!req.files || Object.keys(req.files).length === 0) {
-  } else {
-    let result = await uploadSingleFile(req.files.image);
+  console.log("req.body >>>>>>>>>", req.body);
+  const schema = Joi.object({
+    name: Joi.string(),
 
-    console.log("ket qua cua result", result);
-    imgURL = result.path;
-  }
-  const dataCustomer = {
-    name,
-    address,
-    phone,
-    email,
-    description,
-    image: imgURL,
-  };
-  const resultData = await createCustomerService(dataCustomer);
-  res.status(200).json({
-    customer: resultData,
+    address: Joi.string(),
+
+    phone: Joi.string().pattern(new RegExp("^[0-9]{10,12}$")),
+
+    email: Joi.string().email(),
+
+    description: Joi.string(),
   });
+  const { value, error } = schema.validate(req.body, { abortEarly: false });
+  console.log("eroor ", error);
+  console.log("valueeeeeeeeeeeee", value);
+  if (error) {
+    return res.json({
+      error: error,
+    });
+  } else {
+    ///
+    if (!req.files || Object.keys(req.files).length === 0) {
+    } else {
+      let result = await uploadSingleFile(req.files.image);
+
+      console.log("ket qua cua result", result);
+      imgURL = result.path;
+    }
+    const dataCustomer = {
+      name,
+      address,
+      phone,
+      email,
+      description,
+      image: imgURL,
+    };
+    const resultData = await createCustomerService(dataCustomer);
+    res.status(200).json({
+      customer: resultData,
+    });
+  }
 };
 const createManyCustomer = async (req, res) => {
   try {
